@@ -4,7 +4,12 @@ import React from "react";
  * A single todo row.
  */
 // PUBLIC_INTERFACE
-export default function TodoItem({ todo, onToggle, onDelete }) {
+export default function TodoItem({ todo, onToggle, onDelete = () => {} }) {
+  const handleDelete = () => {
+    // Remove from state in TodoApp; persistence to localStorage happens via TodoApp's effect.
+    onDelete(todo.id);
+  };
+
   return (
     <li className={`todo-item ${todo.completed ? "is-completed" : ""}`}>
       <label className="todo-check">
@@ -20,7 +25,7 @@ export default function TodoItem({ todo, onToggle, onDelete }) {
       <button
         className="btn btn-danger"
         type="button"
-        onClick={() => onDelete(todo.id)}
+        onClick={handleDelete}
         aria-label={`Delete "${todo.text}"`}
       >
         Delete
